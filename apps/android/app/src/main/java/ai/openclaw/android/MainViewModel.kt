@@ -48,6 +48,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
   val talkStatusText: StateFlow<String> = runtime.talkStatusText
   val talkIsListening: StateFlow<Boolean> = runtime.talkIsListening
   val talkIsSpeaking: StateFlow<Boolean> = runtime.talkIsSpeaking
+  val onDeviceSpeechEnabled: StateFlow<Boolean> = runtime.onDeviceSpeechEnabled
   val manualEnabled: StateFlow<Boolean> = runtime.manualEnabled
   val manualHost: StateFlow<String> = runtime.manualHost
   val manualPort: StateFlow<Int> = runtime.manualPort
@@ -128,6 +129,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
   fun setTalkEnabled(enabled: Boolean) {
     runtime.setTalkEnabled(enabled)
+  }
+
+  fun setOnDeviceSpeechEnabled(value: Boolean) {
+    runtime.setOnDeviceSpeechEnabled(value)
   }
 
   fun refreshGatewayConnection() {

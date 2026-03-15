@@ -93,6 +93,7 @@ openclaw nodes invoke --node "iOS Node" --command canvas.snapshot --params '{"ma
 
 - Voice wake and talk mode are available in Settings.
 - iOS may suspend background audio; treat voice features as best-effort when the app is not active.
+- **On-Device Recognition**: In Settings → Wake Words → Privacy, toggle **On-Device Recognition** to process speech entirely on-device. This keeps audio data local, enables offline wake-word detection, and does not require an internet connection. On-device mode requires downloading a speech model the first time it is used; iOS 17+ is recommended for the best on-device recognition quality.
 
 ## Common errors
 

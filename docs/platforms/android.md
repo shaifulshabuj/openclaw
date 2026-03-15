@@ -149,3 +149,16 @@ Camera commands (foreground only; permission-gated):
 - `camera.clip` (mp4)
 
 See [Camera node](/nodes/camera) for parameters and CLI helpers.
+
+### 8) Voice wake + on-device recognition
+
+In the Android app, go to **Settings → Voice** to enable voice wake and configure wake words.
+
+**On-Device Recognition**: Enable **On-Device Recognition** in the Voice section to use Android's on-device speech recognizer. This processes speech entirely on the device:
+
+- No audio is sent to Google's servers.
+- Works offline without an internet connection.
+- Requires Android 12 (API 31) or higher (same as the minimum supported version).
+- An on-device speech model must be downloaded first; Android prompts to install the relevant language pack automatically.
+
+If on-device recognition is unavailable, the app falls back to the standard speech recognizer.

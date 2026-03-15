@@ -19,6 +19,7 @@ class VoiceWakeManager(
   private val context: Context,
   private val scope: CoroutineScope,
   private val onCommand: suspend (String) -> Unit,
+  private val useOnDeviceSpeech: () -> Boolean = { false },
 ) {
   private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -53,7 +54,12 @@ class VoiceWakeManager(
 
       try {
         recognizer?.destroy()
-        recognizer = SpeechRecognizer.createSpeechRecognizer(context).also { it.setRecognitionListener(listener) }
+        recognizer =
+          if (useOnDeviceSpeech() && SpeechRecognizer.isOnDeviceRecognitionAvailable(context)) {
+            SpeechRecognizer.createOnDeviceSpeechRecognizer(context)
+          } else {
+            SpeechRecognizer.createSpeechRecognizer(context)
+          }.also { it.setRecognitionListener(listener) }
         startListeningInternal()
       } catch (err: Throwable) {
         _isListening.value = false

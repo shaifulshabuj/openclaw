@@ -69,6 +69,7 @@ class NodeRuntime(context: Context) {
             }.toString(),
         )
       },
+      useOnDeviceSpeech = { prefs.onDeviceSpeechEnabled.value },
     )
   }
 
@@ -77,6 +78,9 @@ class NodeRuntime(context: Context) {
 
   val voiceWakeStatusText: StateFlow<String>
     get() = voiceWake.statusText
+
+  val onDeviceSpeechEnabled: StateFlow<Boolean>
+    get() = prefs.onDeviceSpeechEnabled
 
   val talkStatusText: StateFlow<String>
     get() = talkMode.statusText
@@ -529,6 +533,10 @@ class NodeRuntime(context: Context) {
 
   fun setTalkEnabled(value: Boolean) {
     prefs.setTalkEnabled(value)
+  }
+
+  fun setOnDeviceSpeechEnabled(value: Boolean) {
+    prefs.setOnDeviceSpeechEnabled(value)
   }
 
   fun refreshGatewayConnection() {
