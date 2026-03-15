@@ -79,6 +79,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
   val wakeWords by viewModel.wakeWords.collectAsState()
   val voiceWakeMode by viewModel.voiceWakeMode.collectAsState()
   val voiceWakeStatusText by viewModel.voiceWakeStatusText.collectAsState()
+  val onDeviceSpeechEnabled by viewModel.onDeviceSpeechEnabled.collectAsState()
   val isConnected by viewModel.isConnected.collectAsState()
   val manualEnabled by viewModel.manualEnabled.collectAsState()
   val manualHost by viewModel.manualHost.collectAsState()
@@ -561,6 +562,18 @@ fun SettingsSheet(viewModel: MainViewModel) {
           "Connect to a gateway to sync wake words globally."
         },
         color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
+    item {
+      ListItem(
+        headlineContent = { Text("On-Device Recognition") },
+        supportingContent = { Text("Process speech locally for privacy and offline use. Requires on-device model download.") },
+        trailingContent = {
+          Switch(
+            checked = onDeviceSpeechEnabled,
+            onCheckedChange = viewModel::setOnDeviceSpeechEnabled,
+          )
+        },
       )
     }
 

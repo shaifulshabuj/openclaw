@@ -4,6 +4,7 @@ import Combine
 struct VoiceWakeWordsSettingsView: View {
     @Environment(NodeAppModel.self) private var appModel
     @State private var triggerWords: [String] = VoiceWakePreferences.loadTriggerWords()
+    @State private var onDeviceRecognition: Bool = VoiceWakePreferences.loadOnDeviceRecognition()
     @FocusState private var focusedTriggerIndex: Int?
     @State private var syncTask: Task<Void, Never>?
 
@@ -39,6 +40,19 @@ struct VoiceWakeWordsSettingsView: View {
                     "OpenClaw reacts when any trigger appears in a transcription. "
                         + "Keep them short to avoid false positives.")
             }
+
+            Section {
+                Toggle("On-Device Recognition", isOn: self.$onDeviceRecognition)
+                    .onChange(of: self.onDeviceRecognition) { _, newValue in
+                        VoiceWakePreferences.saveOnDeviceRecognition(newValue)
+                    }
+            } header: {
+                Text("Privacy")
+            } footer: {
+                Text(
+                    "Process speech locally on-device for enhanced privacy and offline support. "
+                        + "Requires downloading an on-device speech model.")
+            }
         }
         .navigationTitle("Wake Words")
         .toolbar { EditButton() }
@@ -47,6 +61,7 @@ struct VoiceWakeWordsSettingsView: View {
                 self.triggerWords = VoiceWakePreferences.defaultTriggerWords
                 self.commitTriggerWords()
             }
+            self.onDeviceRecognition = VoiceWakePreferences.loadOnDeviceRecognition()
         }
         .onChange(of: self.focusedTriggerIndex) { oldValue, newValue in
             guard oldValue != nil, oldValue != newValue else { return }
@@ -57,6 +72,10 @@ struct VoiceWakeWordsSettingsView: View {
             let updated = VoiceWakePreferences.loadTriggerWords()
             if updated != self.triggerWords {
                 self.triggerWords = updated
+            }
+            let updatedOnDevice = VoiceWakePreferences.loadOnDeviceRecognition()
+            if updatedOnDevice != self.onDeviceRecognition {
+                self.onDeviceRecognition = updatedOnDevice
             }
         }
     }

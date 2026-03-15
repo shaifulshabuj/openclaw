@@ -3,11 +3,20 @@ import Foundation
 enum VoiceWakePreferences {
     static let enabledKey = "voiceWake.enabled"
     static let triggerWordsKey = "voiceWake.triggerWords"
+    static let onDeviceRecognitionKey = "voiceWake.onDeviceRecognition"
 
     // Keep defaults aligned with the mac app.
     static let defaultTriggerWords: [String] = ["openclaw", "claude"]
     static let maxWords = 32
     static let maxWordLength = 64
+
+    static func loadOnDeviceRecognition(defaults: UserDefaults = .standard) -> Bool {
+        defaults.bool(forKey: self.onDeviceRecognitionKey)
+    }
+
+    static func saveOnDeviceRecognition(_ enabled: Bool, defaults: UserDefaults = .standard) {
+        defaults.set(enabled, forKey: self.onDeviceRecognitionKey)
+    }
 
     static func decodeGatewayTriggers(from payloadJSON: String) -> [String]? {
         guard let data = payloadJSON.data(using: .utf8) else { return nil }

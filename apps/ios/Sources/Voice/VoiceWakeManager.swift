@@ -86,6 +86,7 @@ final class VoiceWakeManager: NSObject {
     var statusText: String = "Off"
     var triggerWords: [String] = VoiceWakePreferences.loadTriggerWords()
     var lastTriggeredCommand: String?
+    var onDeviceRecognition: Bool = VoiceWakePreferences.loadOnDeviceRecognition()
 
     private let audioEngine = AVAudioEngine()
     private var speechRecognizer: SFSpeechRecognizer?
@@ -127,6 +128,10 @@ final class VoiceWakeManager: NSObject {
         let updated = VoiceWakePreferences.loadTriggerWords()
         if updated != self.triggerWords {
             self.triggerWords = updated
+        }
+        let updatedOnDevice = VoiceWakePreferences.loadOnDeviceRecognition()
+        if updatedOnDevice != self.onDeviceRecognition {
+            self.onDeviceRecognition = updatedOnDevice
         }
     }
 
@@ -277,6 +282,8 @@ final class VoiceWakeManager: NSObject {
 
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
+        // On-device recognition keeps speech data local and works offline.
+        request.requiresOnDeviceRecognition = self.onDeviceRecognition
         self.recognitionRequest = request
 
         let inputNode = self.audioEngine.inputNode
